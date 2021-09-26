@@ -1,3 +1,6 @@
+import { useState } from "react";
+import { useRouter } from "next/router";
+
 import { AiOutlineSearch } from "react-icons/ai";
 import { HiOutlineMenuAlt4 } from "react-icons/hi";
 import { IoCloseOutline } from "react-icons/io5";
@@ -8,9 +11,10 @@ import {
   FaTwitter,
   FaYoutube,
 } from "react-icons/fa";
-import { useState } from "react";
+import { NavLinks } from "utils/NavLinks";
 
 const Navbar: React.FC = () => {
+  const { pathname } = useRouter();
   const [collapsed, setCollapsed] = useState<Boolean>(true);
   return (
     <>
@@ -43,11 +47,17 @@ const Navbar: React.FC = () => {
             </div>
             {/* Links */}
             <ul className="flex flex-col">
-              <li className="py-3 border-b border-opacity-30">Home</li>
-              <li className="py-3 border-b border-opacity-30">Lifestyle</li>
-              <li className="py-3 border-b border-opacity-30">Inspiration</li>
-              <li className="py-3 border-b border-opacity-30">Pages</li>
-              <li className="py-3 border-b border-opacity-30">Contact</li>
+              {NavLinks &&
+                NavLinks.map((link) => (
+                  <li
+                    key={link.name}
+                    className={`py-3 border-b border-opacity-30 opacity-80 cursor-pointer ${
+                      pathname === link.target ? "text-blue-800" : ""
+                    }`}
+                  >
+                    {link.name}
+                  </li>
+                ))}
             </ul>
             {/* Social buttons */}
             <div className="flex w-full">
@@ -83,13 +93,19 @@ const Navbar: React.FC = () => {
 
           <div className="hidden lg:flex w-full justify-center px-10">
             <ul className="flex items-center space-x-10 text-gray-500">
-              <li className="px-6 py-2 rounded-full bg-gradient-to-tr from-blue-800 to-blue-400 text-white">
-                Home
-              </li>
-              <li>Lifestyle</li>
-              <li>Inspiration</li>
-              <li>Pages</li>
-              <li>Contact</li>
+              {NavLinks &&
+                NavLinks.map((link) => (
+                  <li
+                    key={link.name}
+                    className={`${
+                      pathname === link.target
+                        ? "px-6 py-2 rounded-full bg-gradient-to-tr from-blue-800 to-blue-400 text-white"
+                        : ""
+                    }`}
+                  >
+                    {link.name}
+                  </li>
+                ))}
             </ul>
           </div>
           <div className="hidden lg:flex w-full justify-center px-5">
